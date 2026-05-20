@@ -1,0 +1,32 @@
+{{!-- templates/chronicle.hbs --}}
+
+<div class="gl-panel gl-chronicle" {{#unless showChronicle}}hidden{{/unless}}>
+
+  <div class="gl-section-header">
+    <span class="gl-section-title">Crónica del Grand Lodge</span>
+    {{#if isGM}}
+    <button class="gl-add-btn" data-action="addChronicle">
+      <i class="fa-solid fa-plus"></i> Nueva entrada
+    </button>
+    {{/if}}
+  </div>
+
+  <div class="gl-chronicle-list">
+    {{#each chronicle}}
+    <div class="gl-chronicle-entry" data-timestamp="{{this.timestamp}}">
+      <div class="gl-chronicle-date">{{this.date}}</div>
+      <div class="gl-chronicle-title">{{this.title}}</div>
+      <div class="gl-chronicle-text">{{this.text}}</div>
+      {{#if @root.isGM}}
+      <button class="gl-chronicle-delete" data-action="deleteChronicle" title="Eliminar entrada">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+      {{/if}}
+    </div>
+    {{else}}
+    <p class="gl-empty">Aún no hay entradas en la crónica.</p>
+    {{/each}}
+  </div>
+
+</div>
+

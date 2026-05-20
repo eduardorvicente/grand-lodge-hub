@@ -1,0 +1,56 @@
+{{!-- templates/agents.hbs --}}
+
+<div class="gl-panel gl-agents" {{#unless showAgents}}hidden{{/unless}}>
+
+  <div class="gl-section-header">
+    <span class="gl-section-title">Los Trece Agentes</span>
+    <span class="gl-section-hint">Clic para rotar estado · Doble clic para abrir ficha</span>
+  </div>
+
+  <div class="gl-agent-grid">
+    {{#each agents}}
+    <div class="gl-agent-card status-{{this.status}}{{#if this.hidden}} agent-hidden{{/if}}"
+         data-actor-id="{{this.actorId}}"
+         data-action="cycleAgent"
+         title="Clic: cambiar estado | Doble clic: abrir ficha">
+
+      <div class="gl-agent-portrait">
+        <img src="{{this.img}}" alt="{{this.name}}">
+        <div class="gl-agent-status-dot status-{{this.status}}"></div>
+      </div>
+
+      <div class="gl-agent-info">
+        <div class="gl-agent-name">{{this.name}}</div>
+        <div class="gl-agent-class">{{this.className}}</div>
+        <div class="gl-agent-level">Nivel {{this.level}}</div>
+        <div class="gl-agent-status">
+          <i class="fa-solid {{this.statusIcon}}"></i>
+          {{this.statusLabel}}
+        </div>
+        {{#if this.missionTitle}}
+        <div class="gl-agent-mission">↳ {{this.missionTitle}}</div>
+        {{/if}}
+      </div>
+
+      <button class="gl-agent-sheet-btn"
+              data-action="openActorSheet"
+              data-actor-id="{{this.actorId}}"
+              title="Abrir ficha">
+        <i class="fa-solid fa-scroll"></i>
+      </button>
+
+      {{#if @root.isGM}}
+      <button class="gl-agent-hide-btn"
+              data-action="toggleAgentVisibility"
+              data-actor-id="{{this.actorId}}"
+              title="{{#if this.hidden}}Mostrar en la vista de jugadores{{else}}Ocultar de la vista de jugadores{{/if}}">
+        <i class="fa-solid {{#if this.hidden}}fa-eye{{else}}fa-eye-slash{{/if}}"></i>
+      </button>
+      {{/if}}
+    </div>
+    {{else}}
+    <p class="gl-empty">No hay personajes en el mundo todavía.</p>
+    {{/each}}
+  </div>
+
+</div>

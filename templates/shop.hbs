@@ -1,0 +1,105 @@
+{{!-- templates/shop.hbs --}}
+
+<div class="gl-panel gl-shop" {{#unless showShop}}hidden{{/unless}}>
+
+  {{!-- Selector de personaje activo --}}
+  <div class="gl-shop-selector">
+    <label><i class="fa-solid fa-user"></i> Tu personaje:</label>
+    <select id="shop-actor-select">
+      <option value="">— Seleccionar —</option>
+      {{#each ownedAgents}}
+      <option value="{{this.actorId}}">{{this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  {{!-- ── TIENDA DEL LODGE ─────────────────────────────────────────── --}}
+  <div class="gl-shop-divider">
+    <span><i class="fa-solid fa-store"></i> Tienda del Lodge</span>
+  </div>
+
+  {{#if isGM}}
+  <div class="gl-shop-dropzone" id="shop-dropzone">
+    <i class="fa-solid fa-arrow-down-to-bracket"></i>
+    Arrastra un item aquí para agregarlo (solo GM)
+  </div>
+  {{/if}}
+
+  <div class="gl-shop-items">
+    {{#each shopItems}}
+    <div class="gl-shop-item" data-item-uuid="{{this.uuid}}">
+      <img src="{{this.img}}" alt="{{this.name}}"
+           class="gl-item-viewable" data-action="viewShopItem" data-item-uuid="{{this.uuid}}" title="Ver descripción">
+      <div class="gl-shop-item-info">
+        <div class="gl-shop-item-name gl-item-viewable" data-action="viewShopItem" data-item-uuid="{{this.uuid}}">{{this.name}}</div>
+        <div class="gl-shop-item-type">{{this.itemType}}</div>
+        {{#if this.priceLabel}}<div class="gl-shop-item-price">{{this.priceLabel}}</div>{{/if}}
+      </div>
+      <div class="gl-shop-item-stock">
+        {{#if this.infinite}}
+          <span class="stock-infinite" title="Stock infinito">∞</span>
+        {{else}}
+          <span class="stock-count {{#if (eq this.stock 0)}}empty{{/if}}">{{this.stock}}</span>
+        {{/if}}
+        <button class="gl-shop-take" data-action="takeShopItem" data-item-uuid="{{this.uuid}}"
+                {{#unless this.infinite}}{{#if (eq this.stock 0)}}disabled{{/if}}{{/unless}}
+                title="Comprar">
+          <i class="fa-solid fa-coins"></i> Comprar
+        </button>
+      </div>
+      {{#if @root.isGM}}
+      <button class="gl-shop-remove" data-action="removeShopItem" data-item-uuid="{{this.uuid}}" title="Quitar de la tienda">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      {{/if}}
+    </div>
+    {{else}}
+    <p class="gl-empty">
+      {{#if isGM}}Arrastra items del compendio para llenar la tienda.{{else}}La tienda está vacía por el momento.{{/if}}
+    </p>
+    {{/each}}
+  </div>
+
+  {{!-- ── MERCADO DE AGENTES ──────────────────────────────────────── --}}
+  <div class="gl-shop-divider" style="margin-top:24px">
+    <span><i class="fa-solid fa-handshake"></i> Mercado de Agentes</span>
+    <small>Vende o intercambia items con otros agentes</small>
+  </div>
+
+  <div class="gl-market-dropzone" id="market-dropzone">
+    <i class="fa-solid fa-tag"></i>
+    Arrastra un item de tu inventario para ponerlo en venta
+  </div>
+
+  <div class="gl-market-listings">
+    {{#each marketplace}}
+    <div class="gl-market-card" data-listing-id="{{this.id}}">
+      <img src="{{this.img}}" class="gl-market-img gl-item-viewable" alt="{{this.itemName}}"
+           data-action="viewMarketItem" data-listing-id="{{this.id}}" title="Ver descripción">
+      <div class="gl-market-info">
+        <div class="gl-market-name gl-item-viewable" data-action="viewMarketItem" data-listing-id="{{this.id}}">{{this.itemName}}</div>
+        <div class="gl-market-seller"><i class="fa-solid fa-user"></i> {{this.sellerName}}</div>
+        {{#if this.note}}<div class="gl-market-note">{{this.note}}</div>{{/if}}
+      </div>
+      <div class="gl-market-right">
+        <div class="gl-market-price">{{this.priceLabel}}</div>
+        <div class="gl-market-actions">
+          {{#unless this.isMine}}
+          <button class="gl-market-buy" data-action="buyMarketItem" title="Comprar">
+            <i class="fa-solid fa-coins"></i> Comprar
+          </button>
+          {{/unless}}
+          {{#if this.canRemove}}
+          <button class="gl-market-remove" data-action="removeMarketListing" title="Retirar del mercado">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    {{else}}
+    <p class="gl-empty">No hay items en el mercado. Arrastra un item de tu inventario para venderlo.</p>
+    {{/each}}
+  </div>
+
+</div>

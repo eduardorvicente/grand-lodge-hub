@@ -1,0 +1,51 @@
+{{!-- templates/mission-dialog.hbs --}}
+<div class="gl-mission-dialog">
+
+  <div class="gl-dialog-badge badge-{{mission.type}}">
+    {{#if (eq mission.type "principal")}}MISIÓN PRINCIPAL{{/if}}
+    {{#if (eq mission.type "bounty")}}CONTRATO{{/if}}
+    {{#if (eq mission.type "quest")}}ENCARGO{{/if}}
+    {{#if (eq mission.type "evento")}}EVENTO ESPECIAL{{/if}}
+  </div>
+
+  <p class="gl-dialog-region">
+    <i class="fa-solid fa-location-dot"></i> {{mission.region}} &nbsp;·&nbsp; {{mission.ref}}
+  </p>
+
+  <p class="gl-dialog-desc">{{mission.desc}}</p>
+
+  <div class="gl-dialog-details">
+    <div class="gl-dialog-row">
+      <span>Nivel recomendado</span>
+      <strong>{{mission.nivel}}</strong>
+    </div>
+    <div class="gl-dialog-row">
+      <span>Duración estimada</span>
+      <strong>{{mission.duracion}}</strong>
+    </div>
+    <div class="gl-dialog-row">
+      <span>Recompensa</span>
+      <strong>{{mission.reward}}</strong>
+    </div>
+  </div>
+
+  {{#if mission.taken}}
+  <p class="gl-dialog-taken">Esta misión ya ha sido asignada.</p>
+  {{else}}
+  <form>
+    <label class="gl-assign-label">Seleccionar agentes para esta misión:</label>
+    <div class="gl-assign-grid">
+      {{#each agents}}
+      <label class="gl-assign-check">
+        <input type="checkbox" name="agents" value="{{this.actorId}}">
+        <img src="{{this.img}}" alt="">
+        <span>{{this.name}} <em>(Nv. {{this.level}})</em></span>
+      </label>
+      {{else}}
+      <p class="gl-empty">No hay agentes disponibles.</p>
+      {{/each}}
+    </div>
+  </form>
+  {{/if}}
+
+</div>

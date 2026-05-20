@@ -1,0 +1,74 @@
+{{!-- templates/missions.hbs --}}
+
+<div class="gl-panel gl-missions" {{#unless showMissions}}hidden{{/unless}}>
+
+  {{!-- Filtros --}}
+  <div class="gl-filters">
+    <span class="gl-filter-label">Ver:</span>
+    <button class="gl-filter-btn {{#if (eq missionFilter "all")}}active{{/if}}" data-action="filterMissions" data-filter="all">Todas</button>
+    <button class="gl-filter-btn {{#if (eq missionFilter "evento")}}active{{/if}}" data-action="filterMissions" data-filter="evento">Eventos</button>
+    <button class="gl-filter-btn {{#if (eq missionFilter "principal")}}active{{/if}}" data-action="filterMissions" data-filter="principal">Principales</button>
+    <button class="gl-filter-btn {{#if (eq missionFilter "bounty")}}active{{/if}}" data-action="filterMissions" data-filter="bounty">Contratos</button>
+    <button class="gl-filter-btn {{#if (eq missionFilter "quest")}}active{{/if}}" data-action="filterMissions" data-filter="quest">Encargos</button>
+    {{#if isGM}}
+<button class="gl-add-btn" data-action="addMission">
+  <i class="fa-solid fa-plus"></i> Nueva misión
+</button>
+{{/if}}
+  </div>
+
+  {{!-- Grid de misiones --}}
+  <div class="gl-mission-grid">
+    {{#each missions}}
+    <div class="gl-mission-card {{#if this.taken}}taken{{/if}} type-{{this.type}}"
+         data-mission-id="{{this.id}}">
+
+      <div class="gl-mission-body" data-action="openMission">
+        <div class="gl-mission-header">
+          <div class="gl-mission-title">{{this.title}}</div>
+          <div class="gl-mission-badge badge-{{this.type}}">
+            {{#if (eq this.type "principal")}}PRINCIPAL{{/if}}
+            {{#if (eq this.type "bounty")}}CONTRATO{{/if}}
+            {{#if (eq this.type "quest")}}ENCARGO{{/if}}
+            {{#if (eq this.type "evento")}}EVENTO{{/if}}
+          </div>
+        </div>
+
+        <div class="gl-mission-region">
+          <i class="fa-solid fa-location-dot"></i> {{this.region}}
+        </div>
+
+        <div class="gl-mission-desc">{{this.desc}}</div>
+
+        <div class="gl-mission-meta">
+          <span><i class="fa-solid fa-shield-halved"></i> Nivel {{this.nivel}}</span>
+          <span><i class="fa-regular fa-clock"></i> {{this.duracion}}</span>
+          {{#if this.assignedActorIds.length}}
+          <span><i class="fa-solid fa-users"></i> {{this.assignedActorIds.length}} agente(s)</span>
+          {{/if}}
+        </div>
+      </div>
+
+      {{#if ../isGM}}
+      <div class="gl-mission-footer">
+        {{#if this.taken}}
+        <span class="gl-mission-taken-label">ASIGNADA</span>
+        {{/if}}
+        <button class="gl-mission-delete" data-action="deleteMission" title="Borrar misión">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      {{else}}
+        {{#if this.taken}}
+        <div class="gl-mission-footer">
+          <span class="gl-mission-taken-label">ASIGNADA</span>
+        </div>
+        {{/if}}
+      {{/if}}
+    </div>
+    {{else}}
+    <p class="gl-empty">No hay misiones disponibles en esta categoría.</p>
+    {{/each}}
+  </div>
+
+</div>

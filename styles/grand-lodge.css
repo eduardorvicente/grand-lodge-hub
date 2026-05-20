@@ -1,0 +1,634 @@
+/* grand-lodge.css — Estilos del Grand Lodge Hub para Foundry v13 */
+
+/* ── Variables propias (compatibles con el tema de Foundry) ─────────────── */
+.grand-lodge {
+  --gl-gold:        #c8922a;
+  --gl-gold-light:  #e8b84b;
+  --gl-gold-dim:    rgba(200, 146, 42, 0.25);
+  --gl-blood:       #8b1a1a;
+  --gl-teal:        #1a5c5c;
+  --gl-purple:      #5a3a7a;
+  --gl-parchment:   #f0e8cc;
+  --gl-parchment-mid: #c8b888;
+  --gl-ink:         #1a1408;
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+}
+
+/* ── Ventana principal ───────────────────────────────────────────────────── */
+.grand-lodge .window-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--gl-ink);
+  color: var(--gl-parchment);
+  overflow: hidden;
+}
+
+/* ── Botón del sidebar ───────────────────────────────────────────────────── */
+.grand-lodge-btn {
+  width: 100%;
+  margin-bottom: 4px;
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  background: rgba(200, 146, 42, 0.12);
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  color: var(--color-text-light-highlight, #f0e8cc);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.grand-lodge-btn:hover {
+  background: rgba(200, 146, 42, 0.25);
+}
+
+/* ── Pestañas ────────────────────────────────────────────────────────────── */
+.gl-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--gl-gold-dim);
+  background: rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+.gl-tab {
+  flex: 1;
+  padding: 10px 8px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--gl-parchment-mid);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.gl-tab:hover { color: var(--gl-gold-light); }
+.gl-tab.active {
+  color: var(--gl-gold);
+  border-bottom-color: var(--gl-gold);
+  background: rgba(200, 146, 42, 0.06);
+}
+
+/* ── Paneles ─────────────────────────────────────────────────────────────── */
+.gl-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gl-gold-dim) transparent;
+}
+
+/* ── Filtros de misiones ─────────────────────────────────────────────────── */
+.gl-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  align-items: center;
+}
+.gl-filter-label {
+  font-size: 11px;
+  color: var(--gl-parchment-mid);
+  letter-spacing: 0.1em;
+}
+.gl-filter-btn {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 3px 12px;
+  border: 1px solid var(--gl-gold-dim);
+  background: rgba(200,146,42,0.07);
+  color: var(--gl-parchment-mid);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.gl-filter-btn:hover,
+.gl-filter-btn.active {
+  background: rgba(200,146,42,0.2);
+  border-color: var(--gl-gold);
+  color: var(--gl-gold-light);
+}
+
+/* ── Grid de misiones ────────────────────────────────────────────────────── */
+.gl-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.gl-mission-card {
+  background: rgba(240,232,204,0.04);
+  border: 1px solid var(--gl-gold-dim);
+  border-left: 3px solid var(--gl-gold);
+  padding: 14px;
+  transition: all 0.2s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.gl-mission-card:hover {
+  border-color: rgba(200,146,42,0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.gl-mission-card.taken {
+  opacity: 0.55;
+}
+.gl-mission-card.type-principal { border-left-color: var(--gl-blood); }
+.gl-mission-card.type-bounty    { border-left-color: var(--gl-teal); }
+.gl-mission-card.type-quest     { border-left-color: var(--gl-purple); }
+.gl-mission-card.type-evento    { border-left-color: var(--gl-gold); }
+
+.gl-mission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.gl-mission-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--gl-parchment);
+  flex: 1;
+  line-height: 1.3;
+}
+.gl-mission-badge {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-principal { background: rgba(139,26,26,0.3);  color: #e08080; border: 1px solid rgba(139,26,26,0.5); }
+.badge-bounty    { background: rgba(26,92,92,0.3);   color: #70c0c0; border: 1px solid rgba(26,92,92,0.5); }
+.badge-quest     { background: rgba(90,58,122,0.3);  color: #c0a0e0; border: 1px solid rgba(90,58,122,0.5); }
+.badge-evento    { background: rgba(200,146,42,0.2); color: var(--gl-gold-light); border: 1px solid rgba(200,146,42,0.4); }
+
+.gl-mission-region {
+  font-size: 11px;
+  color: var(--gl-parchment-mid);
+  font-style: italic;
+  margin-bottom: 7px;
+}
+.gl-mission-desc {
+  font-size: 12px;
+  color: rgba(240,232,204,0.7);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.gl-mission-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--gl-parchment-mid);
+  flex-wrap: wrap;
+}
+.gl-mission-body {
+  cursor: pointer;
+  flex: 1;
+}
+.gl-mission-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(200,146,42,0.15);
+}
+.gl-mission-taken-label {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: #888;
+  border: 1px solid #555;
+  padding: 2px 5px;
+  margin-right: auto;
+}
+.gl-mission-delete {
+  background: transparent;
+  border: none;
+  color: rgba(192,57,43,0.6);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.gl-mission-delete:hover {
+  color: #c0392b;
+}
+
+/* ── Agentes ─────────────────────────────────────────────────────────────── */
+.gl-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gl-section-title {
+  font-size: 16px;
+  color: var(--gl-gold);
+  font-weight: bold;
+}
+.gl-section-hint {
+  font-size: 11px;
+  color: var(--gl-parchment-mid);
+  font-style: italic;
+}
+
+.gl-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.gl-agent-card {
+  background: rgba(240,232,204,0.04);
+  border: 1px solid var(--gl-gold-dim);
+  border-left: 3px solid #555;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.gl-agent-card:hover { border-color: rgba(200,146,42,0.4); }
+.gl-agent-card.status-available  { border-left-color: #4a9a4a; }
+.gl-agent-card.status-on-mission { border-left-color: var(--gl-gold); }
+.gl-agent-card.status-resting    { border-left-color: var(--gl-teal); }
+
+.gl-agent-portrait {
+  position: relative;
+  flex-shrink: 0;
+}
+.gl-agent-portrait img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--gl-gold-dim);
+}
+.gl-agent-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--gl-ink);
+}
+.gl-agent-status-dot.status-available  { background: #4a9a4a; }
+.gl-agent-status-dot.status-on-mission { background: var(--gl-gold); }
+.gl-agent-status-dot.status-resting    { background: var(--gl-teal); }
+
+.gl-agent-info { flex: 1; min-width: 0; }
+.gl-agent-name  { font-size: 13px; font-weight: bold; color: var(--gl-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gl-agent-class { font-size: 11px; color: var(--gl-parchment-mid); font-style: italic; }
+.gl-agent-level { font-size: 10px; color: var(--gl-gold); margin: 2px 0; }
+.gl-agent-status { font-size: 10px; color: var(--gl-parchment-mid); }
+.gl-agent-mission { font-size: 10px; color: rgba(240,232,204,0.4); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.gl-agent-sheet-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: none;
+  border: none;
+  color: var(--gl-parchment-mid);
+  cursor: pointer;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.gl-agent-card:hover .gl-agent-sheet-btn { opacity: 1; }
+
+.gl-agent-hide-btn {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: none; border: none;
+  color: rgba(240,232,204,0.25);
+  cursor: pointer; padding: 2px 4px;
+  font-size: 11px;
+  opacity: 0; transition: opacity 0.15s;
+}
+.gl-agent-card:hover .gl-agent-hide-btn { opacity: 1; }
+.gl-agent-hide-btn:hover { color: rgba(240,232,204,0.8); }
+.gl-agent-card.agent-hidden { opacity: 0.4; border-style: dashed; }
+.gl-agent-card.agent-hidden .gl-agent-hide-btn { opacity: 1; color: rgba(240,232,204,0.6); }
+
+/* ── Tienda ───────────────────────────────────────────────────────────────── */
+.gl-shop-category { margin-bottom: 24px; }
+.gl-shop-cat-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--gl-gold);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--gl-gold-dim);
+}
+.gl-shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.gl-shop-card {
+  background: rgba(240,232,204,0.04);
+  border: 1px solid var(--gl-gold-dim);
+  padding: 12px;
+  transition: all 0.2s;
+}
+.gl-shop-card:hover {
+  border-color: rgba(200,146,42,0.4);
+  background: rgba(240,232,204,0.07);
+}
+.gl-shop-name  { font-size: 13px; font-weight: bold; color: var(--gl-parchment); margin-bottom: 4px; }
+.gl-shop-desc  { font-size: 12px; color: rgba(240,232,204,0.65); line-height: 1.4; margin-bottom: 8px; }
+.gl-shop-footer { display: flex; justify-content: space-between; align-items: center; }
+.gl-shop-price { font-size: 12px; color: var(--gl-gold); font-weight: bold; }
+.gl-shop-stock { font-size: 10px; color: rgba(240,232,204,0.35); font-style: italic; }
+
+/* ── Crónica ─────────────────────────────────────────────────────────────── */
+.gl-add-btn {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 5px 12px;
+  background: rgba(200,146,42,0.12);
+  border: 1px solid var(--gl-gold-dim);
+  color: var(--gl-gold);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.gl-add-btn:hover { background: rgba(200,146,42,0.25); }
+
+.gl-chronicle-entry {
+  position: relative;
+  border-left: 2px solid var(--gl-gold-dim);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  background: rgba(240,232,204,0.03);
+  transition: border-color 0.2s;
+}
+.gl-chronicle-entry:hover { border-left-color: var(--gl-gold); }
+.gl-chronicle-date  { font-size: 9px; letter-spacing: 0.2em; color: var(--gl-parchment-mid); margin-bottom: 4px; text-transform: uppercase; }
+.gl-chronicle-title { font-size: 14px; font-weight: bold; color: var(--gl-parchment); margin-bottom: 4px; }
+.gl-chronicle-text  { font-size: 13px; color: rgba(240,232,204,0.65); line-height: 1.6; font-style: italic; }
+.gl-chronicle-delete {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: none; border: none;
+  color: rgba(240,232,204,0.2);
+  cursor: pointer; padding: 2px 5px;
+  font-size: 11px;
+  opacity: 0; transition: all 0.15s;
+}
+.gl-chronicle-entry:hover .gl-chronicle-delete { opacity: 1; }
+.gl-chronicle-delete:hover { color: #e07070; }
+
+/* ── Dialog de misión ────────────────────────────────────────────────────── */
+.gl-mission-dialog { padding: 4px; }
+.gl-dialog-badge { display: inline-block; margin-bottom: 10px; }
+.gl-dialog-region { font-size: 12px; color: var(--color-text-dark-secondary, #888); font-style: italic; margin-bottom: 10px; }
+.gl-dialog-desc   { font-size: 14px; line-height: 1.6; margin-bottom: 14px; }
+.gl-dialog-details { border: 1px solid rgba(0,0,0,0.15); border-radius: 3px; padding: 10px; margin-bottom: 14px; }
+.gl-dialog-row    { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; border-bottom: 1px solid rgba(0,0,0,0.08); }
+.gl-dialog-row:last-child { border-bottom: none; }
+.gl-dialog-taken  { font-style: italic; color: var(--color-text-dark-secondary, #888); }
+
+.gl-assign-label { display: block; font-size: 11px; letter-spacing: 0.1em; font-weight: bold; margin-bottom: 8px; }
+.gl-assign-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 4px; }
+.gl-assign-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 5px 8px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.gl-assign-check:hover { background: rgba(0,0,0,0.05); }
+.gl-assign-check img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+
+/* ── General ─────────────────────────────────────────────────────────────── */
+.gl-empty {
+  color: rgba(240,232,204,0.3);
+  font-style: italic;
+  font-size: 13px;
+  padding: 20px;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+.gl-shop-dropzone {
+  border: 2px dashed var(--gl-gold-dim);
+  padding: 20px;
+  text-align: center;
+  color: var(--gl-parchment-mid);
+  font-style: italic;
+  font-size: 13px;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+  cursor: copy;
+}
+.gl-shop-dropzone.dragover {
+  border-color: var(--gl-gold);
+  background: rgba(200,146,42,0.08);
+  color: var(--gl-gold-light);
+}
+
+/* Items de tienda */
+.gl-shop-items { display: flex; flex-direction: column; gap: 8px; }
+
+.gl-shop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(240,232,204,0.04);
+  border: 1px solid var(--gl-gold-dim);
+  padding: 8px 12px;
+  transition: all 0.2s;
+  position: relative;
+}
+.gl-shop-item:hover { border-color: rgba(200,146,42,0.4); background: rgba(240,232,204,0.07); }
+
+.gl-shop-item img { width: 36px; height: 36px; object-fit: contain; border-radius: 4px; }
+.gl-shop-item-info { flex: 1; }
+.gl-shop-item-name { font-size: 13px; color: var(--gl-parchment); font-weight: bold; }
+.gl-shop-item-type { font-size: 11px; color: var(--gl-parchment-mid); font-style: italic; }
+.gl-shop-item-price { font-size: 12px; color: var(--gl-gold); }
+
+.gl-shop-item-stock { font-size: 18px; color: var(--gl-parchment-mid); min-width: 28px; text-align: center; }
+.stock-count.empty { color: #e07070; }
+
+.gl-shop-remove {
+  background: none; border: none;
+  color: rgba(240,232,204,0.2);
+  cursor: pointer; font-size: 13px;
+  opacity: 0; transition: all 0.15s;
+}
+.gl-shop-item:hover .gl-shop-remove { opacity: 1; }
+.gl-shop-remove:hover { color: #e07070; }
+.gl-shop-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(200,146,42,0.06);
+  border: 1px solid var(--gl-gold-dim);
+}
+.gl-shop-selector label {
+  font-size: 13px;
+  color: var(--gl-parchment-mid);
+  white-space: nowrap;
+}
+.gl-shop-selector select {
+  flex: 1;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.gl-shop-take {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 4px 10px;
+  background: rgba(200,146,42,0.12);
+  border: 1px solid var(--gl-gold-dim);
+  color: var(--gl-gold);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.gl-shop-take:hover {
+  background: rgba(200,146,42,0.25);
+  border-color: var(--gl-gold);
+}
+.gl-shop-take:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.gl-item-viewable {
+  cursor: pointer;
+}
+.gl-item-viewable:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ── Separador de sección ────────────────────────────────────────────────── */
+.gl-shop-divider {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--gl-gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--gl-gold-dim);
+}
+.gl-shop-divider small {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--gl-parchment-mid);
+  text-transform: none;
+  font-style: italic;
+}
+
+/* ── Mercado de Agentes ──────────────────────────────────────────────────── */
+.gl-market-dropzone {
+  border: 2px dashed rgba(155,89,182,0.35);
+  padding: 14px;
+  text-align: center;
+  color: var(--gl-parchment-mid);
+  font-style: italic;
+  font-size: 12px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+  cursor: copy;
+}
+.gl-market-dropzone.dragover {
+  border-color: #9b59b6;
+  background: rgba(155,89,182,0.08);
+  color: #c39bd3;
+}
+
+.gl-market-listings { display: flex; flex-direction: column; gap: 8px; }
+
+.gl-market-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(155,89,182,0.05);
+  border: 1px solid rgba(155,89,182,0.25);
+  padding: 8px 12px;
+  transition: all 0.2s;
+}
+.gl-market-card:hover {
+  border-color: rgba(155,89,182,0.5);
+  background: rgba(155,89,182,0.09);
+}
+
+.gl-market-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.gl-market-info  { flex: 1; min-width: 0; }
+.gl-market-name  { font-size: 13px; font-weight: bold; color: var(--gl-parchment); }
+.gl-market-seller { font-size: 11px; color: var(--gl-parchment-mid); font-style: italic; }
+.gl-market-note  { font-size: 11px; color: rgba(240,232,204,0.5); margin-top: 2px; }
+
+.gl-market-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.gl-market-price {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--gl-gold);
+  white-space: nowrap;
+}
+.gl-market-actions { display: flex; gap: 6px; align-items: center; }
+
+.gl-market-buy {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 3px 10px;
+  background: rgba(155,89,182,0.15);
+  border: 1px solid rgba(155,89,182,0.4);
+  color: #c39bd3;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.gl-market-buy:hover {
+  background: rgba(155,89,182,0.3);
+  border-color: #9b59b6;
+  color: #d7b8f0;
+}
+.gl-market-remove {
+  background: none;
+  border: none;
+  color: rgba(240,232,204,0.25);
+  cursor: pointer;
+  font-size: 13px;
+  transition: color 0.15s;
+  padding: 2px 4px;
+}
+.gl-market-remove:hover { color: #e07070; }

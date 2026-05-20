@@ -1,0 +1,11 @@
+{{!-- templates/tabs.hbs --}}
+<div class="gl-tabs">
+  {{#each tabs}}
+  <button class="gl-tab {{#if (eq this.id ../activeTab)}}active{{/if}}"
+          data-action="switchTab"
+          data-tab="{{this.id}}">
+    <i class="fa-solid {{this.icon}}"></i>
+    {{this.label}}
+  </button>
+  {{/each}}
+</div>
