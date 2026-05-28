@@ -2,7 +2,7 @@
   "id": "grand-lodge-hub",
   "title": "Grand Lodge — Tablero de Operaciones",
   "description": "Hub de campaña para el Año de los Santuarios Rotos. Gestión de misiones, agentes, tienda y crónica integrada con PF2e.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": {
     "minimum": "13",
     "verified": "13.351"
