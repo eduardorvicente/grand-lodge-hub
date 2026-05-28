@@ -178,6 +178,12 @@
   line-height: 1.5;
   margin-bottom: 10px;
 }
+.gl-mission-requester {
+  font-size: 11px;
+  color: var(--gl-parchment-mid);
+  font-style: italic;
+  margin-bottom: 10px;
+}
 .gl-mission-meta {
   display: flex;
   gap: 12px;
@@ -218,6 +224,19 @@
 }
 .gl-mission-delete:hover {
   color: #c0392b;
+}
+.gl-mission-edit {
+  background: transparent;
+  border: none;
+  color: rgba(200,146,42,0.6);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.gl-mission-edit:hover {
+  color: #c8922a;
 }
 
 /* ── Agentes ─────────────────────────────────────────────────────────────── */

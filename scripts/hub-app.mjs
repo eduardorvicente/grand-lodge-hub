@@ -40,6 +40,7 @@ export class GrandLodgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
       addChronicle:         GrandLodgeApp.addChronicle,
       openActorSheet:       GrandLodgeApp.openActorSheet,
       addMission:           GrandLodgeApp.addMission,
+      editMission:          GrandLodgeApp.editMission,
       deleteMission:        GrandLodgeApp.deleteMission,
       removeShopItem:       GrandLodgeApp.removeShopItem,
       takeShopItem:         GrandLodgeApp.takeShopItem,
@@ -624,6 +625,7 @@ export class GrandLodgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
           </select>
           <input name="region" type="text" placeholder="Región" style="width:100%">
           <textarea name="desc" rows="3" placeholder="Descripción" style="width:100%"></textarea>
+          <input name="requester" type="text" placeholder="Solicitante" style="width:100%">
           <input name="nivel" type="text" placeholder="Nivel (ej: 1-2)" style="width:100%">
           <input name="duracion" type="text" placeholder="Duración" style="width:100%">
           <input name="reward" type="text" placeholder="Recompensa" style="width:100%">
@@ -637,17 +639,77 @@ export class GrandLodgeApp extends HandlebarsApplicationMixin(ApplicationV2) {
               id:       `custom-${Date.now()}`,
               type:     f.querySelector("[name=type]").value,
               title:    f.querySelector("[name=title]").value || "Sin título",
-              region:   f.querySelector("[name=region]").value,
-              desc:     f.querySelector("[name=desc]").value,
-              nivel:    f.querySelector("[name=nivel]").value,
-              duracion: f.querySelector("[name=duracion]").value,
-              reward:   f.querySelector("[name=reward]").value,
+              region:    f.querySelector("[name=region]").value,
+              desc:      f.querySelector("[name=desc]").value,
+              requester: f.querySelector("[name=requester]").value,
+              nivel:     f.querySelector("[name=nivel]").value,
+              duracion:  f.querySelector("[name=duracion]").value,
+              reward:    f.querySelector("[name=reward]").value,
               ref:      "Misión personalizada",
               taken:    false,
               assignedActorIds: [],
             };
             const missions = game.settings.get(MODULE_ID, "missions");
             await game.settings.set(MODULE_ID, "missions", [...missions, newMission]);
+            this.render();
+          },
+        },
+        { label: "Cancelar", action: "cancel" },
+      ],
+    }).render(true);
+  }
+
+  static async editMission(event, target) {
+    if (!game.user.isGM) return;
+
+    const missionId = target.closest("[data-mission-id]")?.dataset.missionId;
+    if (!missionId) return;
+
+    const missions = game.settings.get(MODULE_ID, "missions");
+    const mission  = missions.find(m => m.id === missionId);
+    if (!mission) return;
+
+    const esc = (s) => foundry.utils.escapeHTML(String(s ?? ""));
+    const opt = (val, label) =>
+      `<option value="${val}" ${mission.type === val ? "selected" : ""}>${label}</option>`;
+
+    new foundry.applications.api.DialogV2({
+      window: { title: "Editar misión", icon: "fa-scroll" },
+      content: `
+        <form style="display:flex;flex-direction:column;gap:8px;padding:8px">
+          <input name="title" type="text" placeholder="Título" value="${esc(mission.title)}" style="width:100%">
+          <select name="type" style="width:100%">
+            ${opt("principal", "Principal")}
+            ${opt("bounty", "Contrato")}
+            ${opt("quest", "Encargo")}
+            ${opt("evento", "Evento")}
+          </select>
+          <input name="region" type="text" placeholder="Región" value="${esc(mission.region)}" style="width:100%">
+          <textarea name="desc" rows="3" placeholder="Descripción" style="width:100%">${esc(mission.desc)}</textarea>
+          <input name="requester" type="text" placeholder="Solicitante" value="${esc(mission.requester)}" style="width:100%">
+          <input name="nivel" type="text" placeholder="Nivel (ej: 1-2)" value="${esc(mission.nivel)}" style="width:100%">
+          <input name="duracion" type="text" placeholder="Duración" value="${esc(mission.duracion)}" style="width:100%">
+          <input name="reward" type="text" placeholder="Recompensa" value="${esc(mission.reward)}" style="width:100%">
+        </form>`,
+      buttons: [
+        {
+          label: "Guardar cambios", icon: "fa-save", action: "save",
+          callback: async (_ev, _btn, dialog) => {
+            const f = dialog.element.querySelector("form");
+            const updated = missions.map(m => m.id === missionId
+              ? {
+                  ...m,
+                  type:     f.querySelector("[name=type]").value,
+                  title:    f.querySelector("[name=title]").value || "Sin título",
+                  region:    f.querySelector("[name=region]").value,
+                  desc:      f.querySelector("[name=desc]").value,
+                  requester: f.querySelector("[name=requester]").value,
+                  nivel:     f.querySelector("[name=nivel]").value,
+                  duracion: f.querySelector("[name=duracion]").value,
+                  reward:   f.querySelector("[name=reward]").value,
+                }
+              : m);
+            await game.settings.set(MODULE_ID, "missions", updated);
             this.render();
           },
         },

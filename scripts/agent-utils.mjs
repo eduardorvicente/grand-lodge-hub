@@ -25,8 +25,15 @@ export class AgentUtils {
    * @returns {AgentData[]}
    */
   static getAgents(agentStatus = {}) {
-    // Todos los personajes jugadores del mundo (PF2e usa type "character")
-    const actors = game.actors.filter(a => a.type === "character");
+    // Solo personajes dentro de la carpeta "The Party" (incluye subcarpetas).
+    // Si la carpeta no existe, no hay agentes.
+    const partyFolder = game.folders.find(f => f.type === "Actor" && f.name === "The Party");
+    const inParty = (actor) => {
+      if (!partyFolder || !actor.folder) return false;
+      return actor.folder.id === partyFolder.id
+          || actor.folder.ancestors?.some(a => a.id === partyFolder.id);
+    };
+    const actors = game.actors.filter(a => a.type === "character" && inParty(a));
 
     return actors.map(actor => {
       const saved  = agentStatus[actor.id] ?? {};

@@ -40,9 +40,18 @@
 
         <div class="gl-mission-desc">{{this.desc}}</div>
 
+        {{#if this.requester}}
+        <div class="gl-mission-requester">
+          <i class="fa-solid fa-user-tie"></i> Solicita: {{this.requester}}
+        </div>
+        {{/if}}
+
         <div class="gl-mission-meta">
           <span><i class="fa-solid fa-shield-halved"></i> Nivel {{this.nivel}}</span>
           <span><i class="fa-regular fa-clock"></i> {{this.duracion}}</span>
+          {{#if this.reward}}
+          <span><i class="fa-solid fa-coins"></i> {{this.reward}}</span>
+          {{/if}}
           {{#if this.assignedActorIds.length}}
           <span><i class="fa-solid fa-users"></i> {{this.assignedActorIds.length}} agente(s)</span>
           {{/if}}
@@ -54,6 +63,9 @@
         {{#if this.taken}}
         <span class="gl-mission-taken-label">ASIGNADA</span>
         {{/if}}
+        <button class="gl-mission-edit" data-action="editMission" title="Editar misión">
+          <i class="fa-solid fa-pen"></i>
+        </button>
         <button class="gl-mission-delete" data-action="deleteMission" title="Borrar misión">
           <i class="fa-solid fa-trash"></i>
         </button>
